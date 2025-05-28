@@ -1,5 +1,4 @@
 #!/usr/bin/node
-
 function factorial(n) {
     // Factorial of NaN is 1
     if (isNaN(n)) {
