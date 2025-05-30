@@ -6,7 +6,6 @@ class Rectangle {
       this.width = w;
       this.height = h;
     } else {
-      console.log('Error: Invalid width or height. Must be positive integers.');
       this.width = undefined;
       this.height = undefined;
     }
