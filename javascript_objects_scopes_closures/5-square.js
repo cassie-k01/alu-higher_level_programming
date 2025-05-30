@@ -1,12 +1,9 @@
 #!/usr/bin/node
+const Rectangle = require('./4-rectangle');
 
 class Square extends Rectangle {
-  constructor(size) {
-    if (Number.isInteger(size) && size > 0) {
-      super(size, size);
-    } else {
-      console.log("Error: Invalid square size. Must be a positive integer.");
-      super(undefined, undefined);
-    }
+  constructor (size) {
+    super(size, size);
   }
 }
+module.exports = Square;
