@@ -7,8 +7,8 @@ class Rectangle {
       this.height = h;
     } else {
       console.log('Error: Invalid width or height. Must be positive integers.');
-      this.width = 0; // Defaulting to 0 instead of undefined
-      this.height = 0;
+      this.width = undefined;
+      this.height = undefined;
     }
   }
 
