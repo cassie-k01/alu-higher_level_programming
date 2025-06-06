@@ -1,17 +1,20 @@
 #!/usr/bin/node
-const request = require('request-promise-native');
+const request = require('request');
 const movieId = process.argv[2];
-const apiUrl = `https://swapi-api.alx-tools.com/api/films/${movieId}/`;
-async function fetchCharacters() {
-  try {
-    const movie = await request(apiUrl);
-    const characters = JSON.parse(movie).characters;
-    for (const characterUrl of characters) {
-      const character = await request(characterUrl);
-      console.log(JSON.parse(character).name);
-    }
-  } catch (error) {
+const apiUrl = `https://swapi-api.hbtn.io/api/films/${movieId}`;
+request(apiUrl, function (error, response, body) {
+  if (error) {
     console.error('Error fetching data:', error);
+    return;
   }
-}
-fetchCharacters();
+  const characters = JSON.parse(body).characters;
+  characters.forEach(characterUrl => {
+    request(characterUrl, function (error, response, body) {
+      if (error) {
+        console.error('Error fetching character data:', error);
+      } else {
+        console.log(JSON.parse(body).name);
+      }
+    });
+  });
+});

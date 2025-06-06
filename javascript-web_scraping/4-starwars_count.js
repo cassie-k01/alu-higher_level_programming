@@ -1,24 +1,18 @@
 #!/usr/bin/node
 const request = require('request');
 const apiUrl = process.argv[2];
-const wedgeId = 18;
-request.get(apiUrl, (err, res, body) => {
-  if (err) {
-    console.error('Error:', err);
+const wedgeAntillesId = 18;
+request(apiUrl, function (error, response, body) {
+  if (error) {
+    console.error('Error fetching data:', error);
     return;
   }
-  console.log('Response Body:', body);
-  const data = JSON.parse(body);
-  let movieCount = 0;
-  if (Array.isArray(data.results)) {
-    data.results.forEach(movie => {   
-      console.log('Movie Characters:', movie.characters);
-      if (movie.characters.includes(`https://swapi-api.alx-tools.com/api/people/${wedgeId}/`)) {
-        movieCount++;
-      }
-    });
-  } else {
-    console.error('Error: data.results is not an array.');
-  }
-  console.log(movieCount);
+  const films = JSON.parse(body).results;
+  let count = 0;
+  films.forEach(film => {
+    if (film.characters.includes(`https://swapi-api.alx-tools.com/api/people/${wedgeAntillesId}/`)) {
+      count++;
+    }
+  });
+  console.log(count);
 });

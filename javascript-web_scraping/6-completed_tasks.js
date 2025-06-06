@@ -1,23 +1,20 @@
 #!/usr/bin/node
 const request = require('request');
 const apiUrl = process.argv[2];
-request.get(apiUrl, (err, res, body) => {
-  if (err || res.statusCode !== 200) {
-    console.error('Error:', err || `Received status code ${res.statusCode}`);
+request(apiUrl, function (error, response, body) {
+  if (error) {
+    console.error('Error fetching data:', error);
     return;
   }
-  let tasks;
-  try {
-    tasks = JSON.parse(body);
-  } catch (parseErr) {
-    console.error('Error parsing JSON:', parseErr);
-    return;
-  }
-  const completedTasks = tasks.reduce((acc, task) => {
+  const tasks = JSON.parse(body);
+  const completedTasksCount = {};
+  tasks.forEach(task => {
     if (task.completed) {
-      acc[task.userId] = (acc[task.userId] || 0) + 1;
+      if (!completedTasksCount[task.userId]) {
+        completedTasksCount[task.userId] = 0;
+      }
+      completedTasksCount[task.userId]++;
     }
-    return acc;
-  }, {});
-  console.log(JSON.stringify(completedTasks));
+  });
+  console.log(completedTasksCount);
 });
