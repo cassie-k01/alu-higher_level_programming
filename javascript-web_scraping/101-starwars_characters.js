@@ -11,20 +11,21 @@ request(apiUrl, (error, response, body) => {
   const characters = movie.characters;
   const fetchCharacterNames = (urls) => {
     let completedRequests = 0;
+    const characterNames = [];
     urls.forEach((url) => {
       request(url, (error, response, body) => {
         if (error) {
           console.error('Error fetching character:', error);
         } else {
           const character = JSON.parse(body);
-          console.log(character.name);
+          characterNames.push(character.name);
         }
         completedRequests++;
-        if (completedRequests === urls.length) {      
+        if (completedRequests === urls.length) {
+          console.log(characterNames.join('\n'));
         }
       });
     });
   };
   fetchCharacterNames(characters);
 });
-

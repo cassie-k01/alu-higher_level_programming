@@ -2,21 +2,22 @@
 const request = require('request');
 const apiUrl = process.argv[2];
 request.get(apiUrl, (err, res, body) => {
-  if (err) {
-    console.error('Error:', err);
+  if (err || res.statusCode !== 200) {
+    console.error('Error:', err || `Received status code ${res.statusCode}`);
     return;
   }
-  const tasks = JSON.parse(body);
-  const completedTasks = {};
-  tasks.forEach(task => {
-    if (task.completed) {
-      if (!completedTasks[task.userId]) {
-        completedTasks[task.userId] = 0;
-      }
-      completedTasks[task.userId]++;
-    }
-  });
-  for (const userId in completedTasks) {
-    console.log(`User ID ${userId}: ${completedTasks[userId]} completed tasks`);
+  let tasks;
+  try {
+    tasks = JSON.parse(body);
+  } catch (parseErr) {
+    console.error('Error parsing JSON:', parseErr);
+    return;
   }
+  const completedTasks = tasks.reduce((acc, task) => {
+    if (task.completed) {
+      acc[task.userId] = (acc[task.userId] || 0) + 1;
+    }
+    return acc;
+  }, {});
+  console.log(JSON.stringify(completedTasks));
 });

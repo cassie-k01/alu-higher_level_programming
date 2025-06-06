@@ -13,6 +13,5 @@ request.get(url, (err, res, body) => {
       console.error('Error writing to file:', writeErr);
       return;
     }
-    console.log(`Content saved to ${filePath}`);
   });
 });
