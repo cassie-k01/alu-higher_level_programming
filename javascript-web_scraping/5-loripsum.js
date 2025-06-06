@@ -8,7 +8,6 @@ request.get(url, (err, res, body) => {
     console.error('Error:', err);
     return;
   }
-
   fs.writeFile(filePath, body, 'utf8', (writeErr) => {
     if (writeErr) {
       console.error('Error writing to file:', writeErr);
